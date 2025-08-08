@@ -30,10 +30,12 @@
 
 
 
-
-import { Geist, Geist_Mono } from "next/font/google";
+// src/app/layout.js
 import "./globals.css";
-import SessionProviderWrapper from "@/components/shared/SessionProviderWrapper"; // ✅ added
+import { Geist, Geist_Mono } from "next/font/google";
+// import SessionProviderWrapper from "@/components/shared/SessionProviderWrapper";
+import { SessionProviderWrapper } from "@/components/shared/SessionProviderWrapper";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,11 +56,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SessionProviderWrapper> {/* ✅ wrapped here */}
+        <SessionProviderWrapper>
           {children}
         </SessionProviderWrapper>
       </body>
     </html>
   );
 }
-

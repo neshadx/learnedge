@@ -1,92 +1,19 @@
-// import NextAuth from "next-auth";
-// import GoogleProvider from "next-auth/providers/google";
-// import CredentialsProvider from "next-auth/providers/credentials";
-// import { MongoDBAdapter } from "@auth/mongodb-adapter";
-// import clientPromise from "@/lib/mongodb"; // ✅ you already have this file
-
-// export const authOptions = {
-//   adapter: MongoDBAdapter(clientPromise),
-//   providers: [
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     }),
-//     CredentialsProvider({
-//       name: "Credentials",
-//       credentials: {
-//         email: { label: "Email", type: "email" },
-//         password: { label: "Password", type: "password" },
-//       },
-//       async authorize(credentials) {
-//         // You can replace this logic with real DB validation
-//         const user = { id: "1", name: "Test User", email: credentials.email };
-//         return user;
-//       },
-//     }),
-//   ],
-//   secret: process.env.NEXTAUTH_SECRET,
-//   session: {
-//     strategy: "jwt",
-//   },
-//   pages: {
-//     signIn: "/login", // you can customize this later
-//   },
-// };
-
-// const handler = NextAuth(authOptions);
-
-// export { handler as GET, handler as POST };
-
-
-
-
-// import NextAuth from "next-auth";
-// import GoogleProvider from "next-auth/providers/google";
-// import CredentialsProvider from "next-auth/providers/credentials";
-// import { MongoDBAdapter } from "@auth/mongodb-adapter";
-// import clientPromise from "@/components/lib/mongodb"; // ✅ FIXED: Correct path to your file
-
-// export const authOptions = {
-//   adapter: MongoDBAdapter(clientPromise),
-//   providers: [
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     }),
-//     CredentialsProvider({
-//       name: "Credentials",
-//       credentials: {
-//         email: { label: "Email", type: "email" },
-//         password: { label: "Password", type: "password" },
-//       },
-//       async authorize(credentials) {
-//         // 🔐 Replace with real DB logic if needed
-//         const user = { id: "1", name: "Test User", email: credentials.email };
-//         return user;
-//       },
-//     }),
-//   ],
-//   secret: process.env.NEXTAUTH_SECRET,
-//   session: {
-//     strategy: "jwt",
-//   },
-//   pages: {
-//     signIn: "/login",
-//   },
-// };
-
-// const handler = NextAuth(authOptions);
-
-// export { handler as GET, handler as POST };
-
-
-
 import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcryptjs";
+import bcrypt from "bcryptjs";
+import { connectDB } from "@/lib/mongodb";
+import { MongoClient } from "mongodb";
 
 const handler = NextAuth({
   providers: [
+    // 🔐 Google Login
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+
+    // 🔐 Credentials (email/password) login
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -94,23 +21,36 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/login`, {
-          method: "POST",
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
+        const { email, password } = credentials;
 
-        const user = await res.json();
-        if (!res.ok || !user) return null;
-        return user;
+        // 1. Connect to DB
+        const client = await connectDB();
+        const usersCollection = client.db().collection("users");
+
+        // 2. Find user by email
+        const user = await usersCollection.findOne({ email });
+        if (!user) return null;
+
+        // 3. Compare password
+        const isValid = await bcrypt.compare(password, user.password);
+        if (!isValid) return null;
+
+        // 4. Return user object
+        return {
+          id: user._id.toString(),
+          name: user.name || "User",
+          email: user.email,
+        };
       },
     }),
   ],
+
   secret: process.env.NEXTAUTH_SECRET,
-  session: { strategy: "jwt" },
+
+  session: {
+    strategy: "jwt",
+  },
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) token.user = user;
@@ -121,10 +61,10 @@ const handler = NextAuth({
       return session;
     },
   },
+
   pages: {
     signIn: "/login",
   },
 });
 
 export { handler as GET, handler as POST };
-
