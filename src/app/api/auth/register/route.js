@@ -1,34 +1,38 @@
+
+
+
 // import { NextResponse } from "next/server";
 // import bcrypt from "bcryptjs";
-// import { connectDB } from "@/lib/mongodb";
+// import clientPromise from "@/lib/mongodb"; // ✅ Corrected import
 
 // export async function POST(req) {
 //   try {
 //     const { name, email, password } = await req.json();
 
+//     // ✅ Basic validation
 //     if (!email || !password) {
 //       return NextResponse.json(
-//         { error: "Email and password are required" },
+//         { error: "Email and password are required." },
 //         { status: 400 }
 //       );
 //     }
 
-//     const client = await connectDB();
-//     const usersCollection = client.db().collection("users");
+//     const client = await clientPromise;
+//     const db = client.db();
+//     const usersCollection = db.collection("users");
 
-//     // Check if user already exists
+//     // 🔍 Check if user already exists
 //     const existingUser = await usersCollection.findOne({ email });
 //     if (existingUser) {
 //       return NextResponse.json(
-//         { error: "User already exists" },
+//         { error: "User already exists." },
 //         { status: 409 }
 //       );
 //     }
 
-//     // Hash password
+//     // 🔐 Hash password before saving
 //     const hashedPassword = await bcrypt.hash(password, 10);
 
-//     // Save user
 //     const newUser = {
 //       name: name || "New User",
 //       email,
@@ -36,10 +40,11 @@
 //       createdAt: new Date(),
 //     };
 
+//     // 💾 Insert user
 //     await usersCollection.insertOne(newUser);
 
 //     return NextResponse.json(
-//       { message: "User registered successfully" },
+//       { message: "User registered successfully." },
 //       { status: 201 }
 //     );
 //   } catch (error) {
@@ -55,13 +60,12 @@
 
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import clientPromise from "@/lib/mongodb"; // ✅ Corrected import
+import { connectDB } from "@/lib/mongodb"; //  Corrected import
 
 export async function POST(req) {
   try {
     const { name, email, password } = await req.json();
 
-    // ✅ Basic validation
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email and password are required." },
@@ -69,12 +73,11 @@ export async function POST(req) {
       );
     }
 
-    const client = await clientPromise;
-    const db = client.db();
+    const db = await connectDB(); //  Get db directly
     const usersCollection = db.collection("users");
 
-    // 🔍 Check if user already exists
     const existingUser = await usersCollection.findOne({ email });
+
     if (existingUser) {
       return NextResponse.json(
         { error: "User already exists." },
@@ -82,7 +85,6 @@ export async function POST(req) {
       );
     }
 
-    // 🔐 Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = {
@@ -92,7 +94,6 @@ export async function POST(req) {
       createdAt: new Date(),
     };
 
-    // 💾 Insert user
     await usersCollection.insertOne(newUser);
 
     return NextResponse.json(
@@ -100,11 +101,10 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error(" Registration error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
     );
   }
 }
-

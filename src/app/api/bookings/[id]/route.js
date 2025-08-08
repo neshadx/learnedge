@@ -1,12 +1,48 @@
 import { NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
 
-let bookings = [];
-
+// ✅ PATCH: Approve a booking
 export async function PATCH(req, { params }) {
-  const index = bookings.findIndex((b) => b.id === params.id);
-  if (index === -1) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  try {
+    const db = await connectDB();
+    const bookingsCollection = db.collection("bookings");
+
+    const result = await bookingsCollection.findOneAndUpdate(
+      { _id: new ObjectId(params.id) },
+      { $set: { status: "approved" } },
+      { returnDocument: "after" }
+    );
+
+    if (!result.value) {
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      message: "Booking approved",
+      booking: result.value,
+    });
+  } catch (err) {
+    console.error("PATCH /bookings/[id] error:", err);
+    return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
-  bookings[index].status = "approved";
-  return NextResponse.json({ message: "Booking approved", booking: bookings[index] });
+}
+
+// ✅ DELETE: Cancel/Delete a booking
+export async function DELETE(req, { params }) {
+  try {
+    const db = await connectDB();
+    const bookingsCollection = db.collection("bookings");
+
+    const result = await bookingsCollection.deleteOne({ _id: new ObjectId(params.id) });
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Booking deleted successfully" });
+  } catch (err) {
+    console.error("DELETE /bookings/[id] error:", err);
+    return NextResponse.json({ error: "Delete failed" }, { status: 500 });
+  }
 }

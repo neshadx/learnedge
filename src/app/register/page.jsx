@@ -90,6 +90,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -115,7 +117,8 @@ const RegisterPage = () => {
     e.preventDefault();
 
     if (!form.email || !form.password) {
-      return alert("Please fill in all fields.");
+      toast.error("Please fill in all fields.");
+      return;
     }
 
     try {
@@ -128,23 +131,33 @@ const RegisterPage = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        return alert(data.error || "Registration failed");
+        toast.error(data.error || "Registration failed.");
+        return;
       }
 
-      // ✅ Auto login after successful register
-      await signIn("credentials", {
+      toast.success("Registered! Logging in...");
+
+      const loginResult = await signIn("credentials", {
         email: form.email,
         password: form.password,
-        callbackUrl: "/dashboard",
+        redirect: false,
       });
 
+      if (loginResult?.ok) {
+        router.push("/dashboard");
+      } else {
+        toast.error("Login failed after registration.");
+      }
+
     } catch (error) {
-      alert("Something went wrong. Please try again.");
+      console.error("Register error:", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <ToastContainer position="top-center" />
       <div className="w-full max-w-md bg-white shadow-lg border border-gray-200 rounded-xl p-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Register to <span className="text-green-600">LearnEdge</span>
