@@ -261,8 +261,9 @@ const CoursesPage = () => {
 
                   <div className="flex items-center justify-between pt-2">
                     <span className="text-base font-semibold text-gray-900">
-                      {currency(course.price)}
-                    </span>
+  Price: {currency(course.price)}
+</span>
+
 
                     <Link
                       href={`/courses/${course._id}`}
