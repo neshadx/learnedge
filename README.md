@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📚 LearnEdge — Learn Smarter
 
-## Getting Started
+LearnEdge is a modern, full-stack learning platform built with **Next.js 15**, **Tailwind CSS**, and **Shadcn UI**.  
+It enables users to explore courses, make bookings, and manage profiles through a secure and visually appealing interface.  
+This project fulfills all requirements from the **Next.js 15 Project Task** assignment.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌐 Live Site
+[View Live Project](https://your-live-site-link.com)  
+_(Replace this with your deployed Vercel link)_
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📝 Project Description
+LearnEdge is designed to make online learning more interactive and user-friendly. It features:
+- A **7-section landing page** with modern UI and responsive design.
+- **About** and **Contact** pages with detailed information.
+- Secure **authentication** with Google & email/password via NextAuth.
+- A protected **dashboard** for managing courses, bookings, and profiles.
+- **MongoDB integration** for storing and retrieving data.
+- Advanced features like pagination, search, SweetAlert modals, and SEO-optimized pages.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
+**Frontend**
+- Next.js 15  
+- Tailwind CSS  
+- Shadcn UI  
+- React Query  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Backend**
+- Next.js API Routes  
+- MongoDB (No Mongoose)  
+- NextAuth.js  
+- Bcrypt  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Tools**
+- ESLint & Prettier  
+- SweetAlert2  
+- Vercel (Deployment)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ✨ Features
+- **Landing Page** with Hero, Features, How It Works, Courses Preview, Testimonials, CTA, and FAQ.
+- **Responsive Navbar & Footer** with active link highlighting.
+- **Authentication** (Google + Email/Password) with route protection.
+- **Dashboard Pages**:  
+  - Home (dynamic stats: total courses, my bookings, profile completion)  
+  - Courses (CRUD operations with MongoDB)  
+  - My Bookings (view/cancel bookings)  
+  - Profile (update name & photo, email read-only)  
+- **API Routes** for courses, bookings, and user profiles.
+- **Advanced**: Pagination, search, SweetAlert confirmation, SEO meta tags.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🔧 Installation & Setup
+
+## 📦 Getting Started
+
+This project was built using **Next.js 15** with the **App Router**.
+
+### ▶ Available Scripts
+
+In the project directory, you can run:
+
+- **`npm run dev`**  
+  Starts the Next.js development server.  
+  Open **[http://localhost:3000](http://localhost:3000)** in your browser to see the app.  
+  The page will automatically reload if you make edits.
+
+- **`npm run build`**  
+  Creates an optimized production build of the application.  
+  Compiles pages, API routes, and assets for maximum performance.
+
+- **`npm start`**  
+  Runs the production build locally.

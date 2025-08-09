@@ -8,7 +8,7 @@ const courses = [
     description: "Master MERN stack from scratch and build real-world apps.",
     // image: "https://img.freepik.com/free-vector/coding-workshop-concept-illustration_114360-8224.jpg",
      image:
-    "https://img.freepik.com/free-vector/web-development-concept-illustration_114360-4296.jpg",
+    "https://i.postimg.cc/rs5V4f3Z/niclas-illg-FJ5e-2f96h4-unsplash.jpg",
     
   },
 //   {
@@ -32,7 +32,7 @@ const courses = [
     title: "Graphic Design Masterclass",
     instructor: "Emily White",
     description: "Design like a pro using Figma, Photoshop, and Canva.",
-    image: "https://img.freepik.com/free-vector/flat-design-ui-ux-background_23-2149056555.jpg",
+    image: "https://i.postimg.cc/cJWJcG07/futc-Ut-Jp-KTlg-OKY-unsplash.jpg",
   },
 ];
 

@@ -120,7 +120,7 @@ const Footer = () => {
         <p className="text-sm">© 2025 LearnEdge. All rights reserved.</p>
         <div className="flex gap-6 text-lg">
           <Link
-            href="https://github.com/your-github-username"
+            href="https://github.com/neshadx"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-green-600 transition"
@@ -128,7 +128,7 @@ const Footer = () => {
             <FaGithub />
           </Link>
           <Link
-            href="https://www.linkedin.com/in/your-linkedin-username"
+            href="https://www.linkedin.com/in/neshad-mahmud"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-green-600 transition"

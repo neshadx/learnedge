@@ -44,7 +44,7 @@ const CTA = () => {
           Join thousands of learners and unlock your full potential today.
         </p>
         <Link
-          href="/dashboard"
+          href="/courses"
           className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-md transition duration-300"
         >
           Get Started Now

@@ -1,8 +1,8 @@
-// src/app/(site)/layout.jsx
+// src/app/dashboard/my-bookings/layout.jsx
 import { fetchSeo } from "@/lib/seo";
 
 export async function generateMetadata() {
-  const seo = await fetchSeo("home");
+  const seo = await fetchSeo("dashboard-my-bookings");
   return {
     title: seo.title,
     description: seo.description,
@@ -24,6 +24,6 @@ export async function generateMetadata() {
   };
 }
 
-export default function SiteLayout({ children }) {
+export default function MyBookingsLayout({ children }) {
   return <>{children}</>;
 }
