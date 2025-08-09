@@ -7,8 +7,8 @@ This project fulfills all requirements from the **Next.js 15 Project Task** assi
 ---
 
 ## 🌐 Live Site
-[View Live Project](https://your-live-site-link.com)  
-_(Replace this with your deployed Vercel link)_
+[View Live Project](https://learnedge-three.vercel.app/)  
+
 
 
 ---

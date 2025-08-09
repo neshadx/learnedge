@@ -109,9 +109,9 @@ export async function generateMetadata() {
       images: [seo.ogImage],
     },
     icons: {
-      icon: "/favicon.ico",
-      shortcut: "/favicon.ico",
-      apple: "/apple-touch-icon.png",
+      icon: "/favicon.png",
+      shortcut: "/favicon.png",
+      apple: "/favicon.png",
     },
   };
 }
